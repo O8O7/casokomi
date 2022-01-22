@@ -1,0 +1,109 @@
+.flexChat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+}
+
+.flexchildren {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: rgb(255 255 255);
+  background-color: rgb(59 130 246);
+  position: sticky;
+  top: 0px;
+}
+
+.flexchildren h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+
+.flexchildren h2 {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.flexNextchildren {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  background-color: #edf2f7;
+}
+
+.flexNextchildrenNext {
+  flex: 1 1 0%;
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+.flexNextNext {
+  padding: 1rem;
+  position: sticky;
+  background-color: #cbd5e0;
+  height: 5rem;
+  bottom: 0px;
+}
+
+.flexNextNextIn {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 0%;
+  height: 100%;
+  border-color: rgb(229 231 235);
+  border-right-width: 1px;
+  border-left-width: 0px;
+}
+
+.flexNextNextNextIn {
+  padding-right: 0.5rem;
+  flex: 1 1 0%;
+}
+
+.flexNextNextNextIn input {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e0;
+  border-width: 1px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.lastFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding-left: 0.5rem;
+}
+
+.lastFlex button {
+  background-color: rgb(107 114 128);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  color: rgb(255 255 255);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  height: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+/* <div tw="flex flex-col w-full h-screen">
+            <div tw="flex flex-col justify-center items-stretch pl-2">
+              <button
+                tw="bg-blue-500 rounded shadow text-sm text-white h-full px-2"
+                onClick={sendMessage}
+                disabled={!connected}
+              >
+                SEND
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> */

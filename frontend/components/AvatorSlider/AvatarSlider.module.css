@@ -1,0 +1,33 @@
+.autoplaySlider {
+  display: flex;
+  min-width: 100%;
+  width: min-content;
+  animation: 25s linear infinite sliderAnimation;
+}
+.slide {
+  height: 80px;
+  width: 250px;
+  /* background: #3486eb; */
+  /* border: 1px solid #000; */
+  margin: 10px;
+  padding: 8px;
+  border: groove 0.15em #673ab7;
+  border-radius: 42px;
+  position: relative;
+}
+
+.row {
+  display: -ms-grid;
+  -ms-grid-columns: min-content;
+  overflow-x: hidden !important;
+}
+
+.ml2 {
+  margin-left: 5px;
+}
+
+@keyframes sliderAnimation {
+  100% {
+    transform: translateX(-50%);
+  }
+}
