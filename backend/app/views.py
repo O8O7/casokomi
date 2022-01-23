@@ -97,23 +97,23 @@ class CoinMarketView(ModelViewSet):
 #     return chat.comment.order_by('-posted_at').all()[:10]
 
 
-def get_last_10_messages(room_name):
-    chat = get_object_or_404(ChatMessage, room_name=room_name)
-    return chat.comment.order_by('-posted_at').all()[:10]
+# def get_last_10_messages(room_name):
+#     chat = ChatMessage.objects.filter(room_name__name=room_name)[:10]
+#     return chat
 
 
-def get_user_contact(username):
-    user = get_object_or_404(User, name=username)
-    return user
+# def get_user_contact(username):
+#     user = get_object_or_404(User, name=username)
+#     return user
 
 
-def get_current_chat(chatId):
-    return get_object_or_404(ChatMessage, id=chatId)
+# def get_current_chat(chatId):
+#     return get_object_or_404(ChatMessage, id=chatId)
 
 
-def get_room_name(room_name):
-    room = get_object_or_404(ChatRoom, name=room_name)
-    return room
+# def get_room_name(room_name):
+#     room = get_object_or_404(ChatRoom, name=room_name)
+#     return room
 
 
 class ChatMessageListView(ListAPIView):
@@ -122,7 +122,7 @@ class ChatMessageListView(ListAPIView):
 
     def get_queryset(self):
         queryset = ChatMessage.objects.all()
-        username = self.request.query_params.get('username', None)
+        username = self.request.query_params.get('room_name', None)
         if username is not None:
             contact = get_user_contact(username)
             queryset = contact.chats.all()

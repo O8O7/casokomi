@@ -10,8 +10,9 @@ import Paper from "@mui/material/Paper";
 import { TableLoading } from "../components/UIkit";
 import useSWR from "swr";
 import Container from "@mui/material/Container";
+import Link from "next/link";
 
-function SearchCoin() {
+export default function SearchCoin() {
   const router = useRouter();
   const { keyword } = router.query;
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -57,7 +58,9 @@ function SearchCoin() {
                   <TableCell align="right">
                     {Math.floor(row.market_cap)}&nbsp;$
                   </TableCell>
-                  <TableCell align="right">参加</TableCell>
+                  <TableCell align="right">
+                    <Link href={`/chat/?room_name=${row.name}`}>参加</Link>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -67,5 +70,3 @@ function SearchCoin() {
     </>
   );
 }
-
-export default SearchCoin;

@@ -99,7 +99,7 @@ export default function TemporaryDrawer() {
       </>
       )}
       <Divider />
-      <Link href="/ChatPage">
+      {/* <Link href="/ChatPage">
         <a>
           <List>
             <ListItem>
@@ -110,7 +110,7 @@ export default function TemporaryDrawer() {
             </ListItem>
           </List>
         </a>
-      </Link>
+      </Link> */}
       <Link href="/">
         <a>
           <List>

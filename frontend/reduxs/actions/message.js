@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./types";
-import { HOST_URL } from "../../settings";
+// import { HOST_URL } from "../../settings";
 
 export const addMessage = (message) => {
   return {
@@ -32,7 +32,7 @@ export const getUserChats = (username, token) => {
       Authorization: `JWT ${token}`,
     };
     axios
-      .get(`${HOST_URL}/chat/?username=${username}`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/chat/?username=${username}`)
       .then((res) => dispatch(getUserChatsSuccess(res.data)));
   };
 };

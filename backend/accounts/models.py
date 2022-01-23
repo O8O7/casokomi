@@ -34,7 +34,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     image = models.ImageField(
         upload_to='images', verbose_name='プロフィール画像', default='profile/default.png')
     introduction = models.CharField(
-        verbose_name="自己紹介", blank=True, max_length=255)
+        verbose_name="自己紹介", max_length=255, default="自己紹介は現在登録されていません")
     updated_at = models.DateTimeField("更新日", auto_now=True)
     created_at = models.DateTimeField("作成日", auto_now_add=True)
 

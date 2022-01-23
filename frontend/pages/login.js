@@ -63,6 +63,7 @@ export default function Login() {
     if (checked) {
       if (dispatch && dispatch !== null && dispatch !== undefined) {
         await dispatch(login(email, password));
+        console.log(email, password);
       }
     } else {
       if (dispatch && dispatch !== null && dispatch !== undefined) {

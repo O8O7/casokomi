@@ -2,11 +2,19 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Container from "@mui/material/Container";
 import AvatarSlider from "../components/AvatorSlider/AvatarSlider";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { load_user } from "../reduxs/actions/auth";
 
 import BasicTable from "../components/SymbolTable/BasicTable";
 
 const Home = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("hey");
+    dispatch(load_user());
+  }, []);
 
   if (router.isFallback) {
     return <div className="text-center">Loading...</div>;

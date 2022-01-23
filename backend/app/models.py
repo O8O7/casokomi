@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
+from accounts.models import UserAccount
 from django.utils.functional import cached_property
 
 # Create your models here.
@@ -22,7 +23,7 @@ class ChatRoom(models.Model):
 
 class ChatMessage(models.Model):
     username = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="username_chatmessage")
+        UserAccount, on_delete=models.CASCADE, related_name="username_chatmessage")
     room_name = models.ForeignKey(
         ChatRoom, on_delete=models.CASCADE, related_name="room_name_chatmessage")
     comment = models.CharField("コメント", max_length=64)
@@ -35,7 +36,7 @@ class ChatMessage(models.Model):
 class Member(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     # chat_message = models.ForeignKey(ChatMessage, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
 
 
 class Hert(models.Model):

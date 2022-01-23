@@ -21,17 +21,19 @@ import {
   //   GET_COIN_FAIL,
 } from "./types";
 
+import "cookie";
+
 export const load_user = () => async (dispatch) => {
   dispatch({
     type: SET_AUTH_LOADING,
   });
 
+  console.log(localStorage.getItem("access"));
+
   await axios
     .get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/users/me/`, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `JWT ${localStorage.getItem("access")}`,
-        Accept: "application/json",
       },
     })
     .then((res) => {
@@ -106,6 +108,8 @@ export const login = (email, password) => async (dispatch) => {
     type: SET_AUTH_LOADING,
   });
 
+  // withCredentialsをtrueにすることで通信時にCookieを送信できるようになります。
+  //   axios.defaults.withCredentials = true;
   await axios
     .post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/jwt/create/`,
@@ -120,10 +124,11 @@ export const login = (email, password) => async (dispatch) => {
       }
     )
     .then((res) => {
-      // console.log(res.data);
+      //   console.log(res.data.access);
       // {refresh: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90e…oxMH0.WVI8h0izMORqT-Cgy72_QjJXkKwKojEvdi3ScQiNTFw', access: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90e…jEwfQ.a5emR25ac-foKevRYBh-ooogqnHJNEbqK8sA1CKPzvg'}access: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQyNTAxNjI4LCJqdGkiOiI4MmM1MWQ5OGFmMjQ0YTk3OTZjNjMzZTcxMGViNDJhNiIsInVzZXJfaWQiOjEwfQ.a5emR25ac-foKevRYBh-ooogqnHJNEbqK8sA1CKPzvg"refresh: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0Mjc1NzIyOCwianRpIjoiOWI1MDI3ZmViMThkNGY4ZGFmNTljY2FjNGUwYmEwNWMiLCJ1c2VyX2lkIjoxMH0.WVI8h0izMORqT-Cgy72_QjJXkKwKojEvdi3ScQiNTFw"[[Prototype]]: Object
-      localStorage.setItem("access", res.access);
-      localStorage.setItem("refresh", res.refresh);
+      localStorage.setItem("access", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
+      //   res.cookie("access", res.data.access, { httpOnly: true });
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -166,7 +171,7 @@ export const login_not_set_accesstoken =
           type: LOGIN_SUCCESS,
           payload: res.data,
         });
-        dispatch(load_user());
+        // dispatch(load_user());
       })
       .catch((err) => {
         console.log(err);
@@ -365,4 +370,12 @@ export const edit_profile = (id, name, image) => async (dispatch) => {
   dispatch({
     type: REMOVE_AUTH_LOADING,
   });
+};
+
+export const setAxiosAuthToken = (token) => {
+  if (typeof token !== "undefined" && token) {
+    axios.defaults.headers.common["Authorization"] = "JWT " + token;
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
 };
