@@ -10,7 +10,11 @@ import Paper from "@mui/material/Paper";
 import { TableLoading } from "../components/UIkit";
 import useSWR from "swr";
 import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import Link from "next/link";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
 export default function SearchCoin() {
   const router = useRouter();
@@ -34,11 +38,15 @@ export default function SearchCoin() {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Rank</TableCell>
-                <TableCell>名前</TableCell>
+                <TableCell style={{ padding: "16px 0 16px 16px" }}>
+                  名前
+                </TableCell>
+                <TableCell style={{ padding: 0 }} align="center">
+                  チャット
+                </TableCell>
                 <TableCell align="center">Symbol</TableCell>
-                <TableCell align="right">24h変動</TableCell>
-                <TableCell align="right">マーケットキャップ</TableCell>
-                <TableCell align="right">etc..</TableCell>
+                <TableCell align="center">24h変動</TableCell>
+                <TableCell align="center">マーケットキャップ</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -50,16 +58,51 @@ export default function SearchCoin() {
                   <TableCell component="th" scope="row" align="center">
                     {row.rank}
                   </TableCell>
-                  <TableCell>{row.name}</TableCell>
+                  <TableCell style={{ padding: "16px 0 16px 16px" }}>
+                    {row.name}
+                  </TableCell>
+                  <TableCell style={{ padding: 0 }} align="center">
+                    <Link href={`/chat/?room_name=${row.symbol}`}>
+                      <Button
+                        color="info"
+                        size="small"
+                        variant="contained"
+                        endIcon={<ArrowCircleRightIcon />}
+                      >
+                        参加
+                      </Button>
+                    </Link>
+                  </TableCell>
                   <TableCell align="center">{row.symbol}</TableCell>
-                  <TableCell align="right">
-                    {Math.floor(row.day_perchange * 100) / 100}&nbsp;%
+                  <TableCell align="center">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {row.day_perchange > 0 ? (
+                        <>
+                          <KeyboardDoubleArrowUpIcon
+                            style={{ color: "green" }}
+                          />
+                          <span>
+                            {Math.floor(row.day_perchange * 100) / 100}&nbsp;%
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <KeyboardDoubleArrowDownIcon
+                            style={{ color: "red" }}
+                          />
+                          {Math.floor(row.day_perchange * 100) / 100}&nbsp;%
+                        </>
+                      )}
+                    </div>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     {Math.floor(row.market_cap)}&nbsp;$
-                  </TableCell>
-                  <TableCell align="right">
-                    <Link href={`/chat/?room_name=${row.name}`}>参加</Link>
                   </TableCell>
                 </TableRow>
               ))}

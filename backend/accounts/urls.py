@@ -1,14 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RegisterView, UserView, UserViewSet
+from rest_framework import routers
+from .views import UserRetrieve, UserRandom
+
 
 # 追加
 router = DefaultRouter()
-router.register('', UserViewSet)
+router.register('random', UserRandom)
 
 urlpatterns = [
-    # path('users/', UserList.as_view()),
-    path('userlist/', include(router.urls)),
-    path('register/', RegisterView.as_view()),
-    path('user/', UserView.as_view()),
+    path('', include(router.urls)),
+    path('user/<int:pk>/', UserRetrieve.as_view()),
 ]

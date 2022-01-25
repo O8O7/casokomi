@@ -48,6 +48,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         width: "100%",
       },
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem"
+    },
+    // [theme.breakpoints.up("xs")]: {
+    //   fontSize: "1rem"
+    // }
+    fontSize: "1rem"
   },
 }));
 
@@ -63,31 +70,7 @@ export default function SearchInput() {
       query: { keyword: search }
     })
   }, [search])
-  // const handleChangeKeyword = async () => {
-  //   try {
-  //       const res = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/api/app/coin_info/?coin_name=${search}`,
-  //         {
-  //           method: "GET",
-  //         },
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       data = await res.json();
-  //       if (res.ok) {
-  //         return data;
-  //       } else {
-  //         data = undefined;
-  //         return data;
-  //       }
-  //     } catch (err) {
-  //       data = undefined;
-  //       return data;
-  //     }
-  // }
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -97,7 +80,6 @@ export default function SearchInput() {
         id="Search"
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
-        // value={currentSearchWord}
         onChange={currentSearchWord}
         onKeyDown={e => {
           if (e.key === 'Enter') {

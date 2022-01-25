@@ -1,0 +1,64 @@
+.chatHeader {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #427be3;
+}
+
+.chatTitle {
+  /* text-align: center; */
+  margin: 5px 0 5px 0;
+  /* margin: 0 auto; */
+}
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  background-color: #63b0ff;
+}
+
+.chat {
+  flex: 1 1 0%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  min-height: 80vh;
+}
+
+.buttonContainer {
+  padding: 1rem;
+  position: sticky;
+  background-color: #cbd5e0;
+  height: 5rem;
+  bottom: 0px;
+  padding-right: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.25rem;
+  border-color: #cbd5e0;
+  border-width: 1px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.input {
+  flex: 2;
+}
+
+.form button {
+  background-color: rgb(107 114 128);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  color: rgb(255 255 255);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  height: 100%;
+  width: 70px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}

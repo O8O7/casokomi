@@ -12,9 +12,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { register } from "../reduxs/actions/auth";
+import { user_register } from "../reduxs/actions/auth";
 import Loader from "react-loader-spinner";
 import Head from "next/head";
 import Link from "next/link";
@@ -28,8 +29,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://fintechs.site/">
+        Shun Sakamoto
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -40,9 +41,16 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const message = useSelector((state) => state.auth.message);
+  const status_code = useSelector((state) => state.auth.status_code);
   const loading = useSelector((state) => state.auth.loading);
 
   const [formData, setFormData] = useState({
@@ -58,15 +66,15 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
-      await dispatch(register(name, email, password, re_password));
+      await dispatch(
+        user_register(data.name, data.email, data.password, data.re_password)
+      );
     }
   };
 
-  //   認証済みであればトップページへ遷移する
+  // 認証済みであればトップページへ遷移する
   if (typeof window !== "undefined" && isAuthenticated) {
     router.push("/");
   }
@@ -94,10 +102,26 @@ export default function Register() {
             <Typography component="h1" variant="h5">
               アカウント登録
             </Typography>
-            <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              sx={{ mt: 3 }}
+            >
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    {...register("name", {
+                      required: "*入力してください",
+                      minLength: {
+                        value: 2,
+                        message: "2文字以上入力してください",
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: "30文字以下で入力してください",
+                      },
+                    })}
                     autoComplete="given-name"
                     name="name"
                     required
@@ -108,10 +132,23 @@ export default function Register() {
                     value={name}
                     autoFocus
                   />
+                  <span style={{ color: "red" }}>{errors.name?.message}</span>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    required
+                    {...register("email", {
+                      required: "*入力してください",
+                      minLength: {
+                        value: 8,
+                        message: "8文字以上入力してください",
+                      },
+                      maxLength: 100,
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                        message: "@を含めた半角英数字で入力してください",
+                      },
+                    })}
                     fullWidth
                     id="email"
                     onChange={onChange}
@@ -120,10 +157,22 @@ export default function Register() {
                     autoComplete="email"
                     value={email}
                   />
+                  <span style={{ color: "red" }}>{errors.email?.message}</span>
+
+                  {status_code && status_code.email && (
+                    <span style={{ color: "red" }}>{status_code.email[0]}</span>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    required
+                    {...register("password", {
+                      required: "*入力してください",
+                      minLength: {
+                        value: 8,
+                        message: "8文字以上入力してください",
+                      },
+                      maxLength: 100,
+                    })}
                     fullWidth
                     name="password"
                     onChange={onChange}
@@ -133,10 +182,24 @@ export default function Register() {
                     autoComplete="new-password"
                     value={password}
                   />
+                  <span style={{ color: "red" }}>
+                    {errors.password?.message}
+                  </span>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    required
+                    {...register("re_password", {
+                      required: "*入力してください",
+                      minLength: {
+                        value: 8,
+                        message: "8文字以上入力してください",
+                      },
+                      maxLength: 100,
+                      validate: {
+                        value: (value) =>
+                          password === value || "パスワードが一致しません",
+                      },
+                    })}
                     fullWidth
                     name="re_password"
                     label="パスワード確認"
@@ -146,16 +209,26 @@ export default function Register() {
                     autoComplete="new-password"
                     value={re_password}
                   />
+                  <span style={{ color: "red" }}>
+                    {errors.re_password?.message}
+                  </span>
+                  {status_code && status_code.password && (
+                    <span style={{ color: "red" }}>
+                      {status_code.password[0]}
+                    </span>
+                  )}
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <FormControlLabel
                     control={
                       <Checkbox value="allowExtraEmails" color="primary" />
                     }
                     label="同意します"
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
+              <br />
+              {message && <span style={{ color: "red" }}>{message}</span>}
               {loading ? (
                 <Loader type="Oval" color="#F59E00" width={50} height={50} />
               ) : (

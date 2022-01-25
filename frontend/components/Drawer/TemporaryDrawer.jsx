@@ -46,9 +46,22 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <Link href="/">
+        <a>
+          <List>
+            <ListItem>
+              <ListItemIcon>
+              <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Homeへ"} />
+            </ListItem>
+          </List>
+        </a>
+      </Link>
+      <Divider />
       {isAuthenticated ? (
       <>
-        <Link href="/ProfileSample">
+        <Link href="/profile">
           <a>
             <List>
               <ListItem>
@@ -98,31 +111,6 @@ export default function TemporaryDrawer() {
         </Link>
       </>
       )}
-      <Divider />
-      {/* <Link href="/ChatPage">
-        <a>
-          <List>
-            <ListItem>
-              <ListItemIcon>
-              <LoginIcon />
-              </ListItemIcon>
-              <ListItemText primary={"チャットページ"} />
-            </ListItem>
-          </List>
-        </a>
-      </Link> */}
-      <Link href="/">
-        <a>
-          <List>
-            <ListItem>
-              <ListItemIcon>
-              <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Homeへ"} />
-            </ListItem>
-          </List>
-        </a>
-      </Link>
     </Box>
   );
 

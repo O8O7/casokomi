@@ -1,0 +1,44 @@
+.displayflex {
+  display: flex-root;
+}
+
+.mt2 {
+  margin-top: 15px;
+}
+
+.avatarContainer {
+  display: flex;
+  margin: 0.8rem;
+}
+
+.msgBubble {
+  min-width: 200px;
+  max-width: 450px;
+  margin-left: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  background: #ececec;
+}
+
+.msgInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 0 15px 0 15px;
+}
+
+.msgName {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.msgTime {
+  font-size: 0.4em;
+  opacity: 50%;
+  margin-left: 10px;
+}
+
+.msgText {
+  /* padding: 10px; */
+}

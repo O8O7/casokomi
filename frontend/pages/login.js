@@ -2,19 +2,17 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { login, login_not_set_accesstoken } from "../reduxs/actions/auth";
+import { login } from "../reduxs/actions/auth";
 import Loader from "react-loader-spinner";
 import Head from "next/head";
 import Link from "next/link";
@@ -28,8 +26,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://fintechs.site/">
+        Shun Sakamoto
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -40,12 +38,17 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
-
-  const [checked, setChecked] = useState(false);
+  const message = useSelector((state) => state.auth.message);
+  const status_code = useSelector((state) => state.auth.status_code);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -57,18 +60,9 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    if (checked) {
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
-        await dispatch(login(email, password));
-        console.log(email, password);
-      }
-    } else {
-      if (dispatch && dispatch !== null && dispatch !== undefined) {
-        await dispatch(login_not_set_accesstoken(email, password));
-      }
+  const onSubmit = async (data) => {
+    if (dispatch && dispatch !== null && dispatch !== undefined) {
+      await dispatch(login(data.email, data.password));
     }
   };
 
@@ -98,10 +92,28 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               ログイン
             </Typography>
-            <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
+            {/* <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}> */}
+            <Box
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+              noValidate
+              sx={{ mt: 1 }}
+            >
               <TextField
+                {...register("email", {
+                  required: "*入力してください",
+                  minLength: {
+                    value: 8,
+                    message: "8文字以上入力してください",
+                  },
+                  maxLength: 100,
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: "@を含めた半角英数字で入力してください",
+                  },
+                })}
                 margin="normal"
-                required
                 fullWidth
                 id="email"
                 onChange={onChange}
@@ -111,9 +123,17 @@ export default function Login() {
                 autoComplete="email"
                 autoFocus
               />
+              <span style={{ color: "red" }}>{errors.email?.message}</span>
               <TextField
+                {...register("password", {
+                  required: "*入力してください",
+                  minLength: {
+                    value: 8,
+                    message: "8文字以上入力してください",
+                  },
+                  maxLength: 100,
+                })}
                 margin="normal"
-                required
                 fullWidth
                 onChange={onChange}
                 value={password}
@@ -123,14 +143,21 @@ export default function Login() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              <span style={{ color: "red" }}>{errors.password?.message}</span>
+              {/* {status_code && status_code.detail && (
+                <span style={{ color: "red" }}>{status_code.detail}</span>
+              )} */}
+              {/* <FormControlLabel
                 checked={checked}
                 onChange={(e) => {
                   setChecked(e.target.checked);
                 }}
                 control={<Checkbox value="remember" color="primary" />}
                 label="ログイン情報を保存"
-              />
+              /> */}
+              {status_code && message && (
+                <span style={{ color: "red" }}>{message}</span>
+              )}
               {loading ? (
                 <Loader type="Oval" color="#F59E00" width={50} height={50} />
               ) : (

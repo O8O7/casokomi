@@ -30,8 +30,8 @@ class ChatMessageView(ModelViewSet):
         queryset = ChatMessage.objects.all()
         room_name = self.request.query_params.get('room_name', None)
         if room_name is not None:
-            # 部分一致検索
-            queryset = queryset.filter(room_name__name__icontains=room_name)
+            # 完全一致
+            queryset = queryset.filter(room_name__name=room_name)[:100]
         return queryset
 
 

@@ -2,8 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -11,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -28,8 +27,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://fintechs.site/">
+        Shun Sakamoto
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -40,10 +39,17 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function PasswordReset() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
+  const message = useSelector((state) => state.auth.message);
+  const status_code = useSelector((state) => state.auth.status_code);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -55,11 +61,9 @@ export default function PasswordReset() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     if (dispatch && dispatch !== null && dispatch !== undefined) {
-      await dispatch(reset_password(email));
+      await dispatch(reset_password(data.email));
     }
   };
 
@@ -70,7 +74,7 @@ export default function PasswordReset() {
   return (
     <>
       <Head>
-        <title>ログイン</title>
+        <title>パスワードリセット</title>
       </Head>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
@@ -91,11 +95,24 @@ export default function PasswordReset() {
             </Typography>
             <Box
               component="form"
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate
-              sx={{ mt: 1, width: 400 }}
+              sx={{ mt: 1, width: "100%" }}
             >
               <TextField
+                {...register("email", {
+                  required: "*入力してください",
+                  minLength: {
+                    value: 8,
+                    message: "8文字以上入力してください",
+                  },
+                  maxLength: 100,
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: "@を含めた半角英数字で入力してください",
+                  },
+                })}
                 margin="normal"
                 required
                 fullWidth
@@ -107,10 +124,19 @@ export default function PasswordReset() {
                 autoComplete="email"
                 autoFocus
               />
+              <span style={{ color: "red" }}>{errors.email?.message}</span>
+              {status_code && status_code.email && (
+                <span style={{ color: "red" }}>{status_code.email[0]}</span>
+              )}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="ログイン情報を保存"
               /> */}
+              {message && (
+                <p style={{ color: "red", marginTop: "5px", marginBottom: 0 }}>
+                  {message}
+                </p>
+              )}
               {loading ? (
                 <Loader type="Oval" color="#F59E00" width={50} height={50} />
               ) : (

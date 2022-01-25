@@ -2,18 +2,19 @@
   display: flex;
   min-width: 100%;
   width: min-content;
-  animation: 25s linear infinite sliderAnimation;
+  animation: 50s linear infinite sliderAnimation;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .slide {
   height: 80px;
   width: 250px;
-  /* background: #3486eb; */
-  /* border: 1px solid #000; */
   margin: 10px;
   padding: 8px;
   border: groove 0.15em #673ab7;
   border-radius: 42px;
   position: relative;
+  overflow: auto;
 }
 
 .row {
@@ -24,6 +25,14 @@
 
 .ml2 {
   margin-left: 5px;
+}
+
+.name {
+  width: 150px;
+  display: inline-block;
+  margin: 0 5px 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @keyframes sliderAnimation {

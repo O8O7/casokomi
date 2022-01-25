@@ -10,15 +10,15 @@ function Header(props) {
   const { title } = props;
 
   return (
-    <>
+    <div className={style.headerContainer}>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Link href="/"><a><h2>{title}</h2></a></Link>
+        <Link href="/"><a><h2 className={style.logo}>{title}</h2></a></Link>
         <div className={style.borderBlack}>
           <SearchInput />
         </div>
         <TemporaryDrawer />
       </Toolbar>
-    </>
+    </div>
   );
 }
 

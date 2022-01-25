@@ -1,0 +1,17 @@
+.footer {
+  display: block;
+  margin-top: auto;
+}
+
+.footerContainer {
+  background-color: #242424;
+  min-height: 40px;
+  margin-top: 40px;
+}
+
+.small {
+  display: block;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+}

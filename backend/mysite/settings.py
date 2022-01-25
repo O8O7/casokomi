@@ -157,7 +157,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         # "rest_framework.authentication.TokenAuthentication",
     ],
-    'DATETIME_FORMAT': '%Y/%m/%d %H:%M'
+    'DATETIME_FORMAT': '%m/%d %H:%M'
 }
 
 SIMPLE_JWT = {
@@ -194,9 +194,9 @@ DJOSER = {
     # アカウント本登録用URL
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     # メールアドレスリセット完了用URL
-    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email_reset/{uid}/{token}',
     # パスワードリセット完了用URL
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password_reset/{uid}/{token}',
     # カスタムユーザー用シリアライザー
     'SERIALIZERS': {
         'user_create':  'accounts.serializers.UserSerializer',

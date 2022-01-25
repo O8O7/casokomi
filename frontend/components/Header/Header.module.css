@@ -1,5 +1,23 @@
+.headerContainer {
+  position: sticky;
+  top: 0px;
+  background-color: #fff;
+  z-index: 999;
+}
+
 .borderBlack {
   border-radius: 1px solid;
   margin-left: auto;
-  margin-right: 50px;
+}
+
+.logo {
+  margin: 4px;
+  font-size: 1rem;
+}
+
+@media (min-width: 480px) {
+  .logo {
+    font-size: 1.5rem;
+    margin: 10px;
+  }
 }

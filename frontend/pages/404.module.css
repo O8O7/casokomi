@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.error {
+  text-align: center;
+}
+
+.btnSquare {
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+  width: 150px;
+  padding: 0.5em 1em;
+  background: #668ad8;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: solid 6px #627295;
+  border-radius: 3px;
+  margin-top: 50px;
+}

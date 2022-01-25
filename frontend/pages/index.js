@@ -7,12 +7,12 @@ import { useEffect } from "react";
 import { load_user } from "../reduxs/actions/auth";
 
 import BasicTable from "../components/SymbolTable/BasicTable";
+import Footer from "../components/Footer/Footer";
 
 const Home = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("hey");
     dispatch(load_user());
   }, []);
 
@@ -30,6 +30,7 @@ const Home = () => {
       <Container>
         <BasicTable />
       </Container>
+      <Footer />
     </>
   );
 };

@@ -19,16 +19,14 @@ import {
   REMOVE_AUTH_LOADING,
   //   GET_COIN_SUCCESS,
   //   GET_COIN_FAIL,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_FAIL,
 } from "./types";
-
-import "cookie";
 
 export const load_user = () => async (dispatch) => {
   dispatch({
     type: SET_AUTH_LOADING,
   });
-
-  console.log(localStorage.getItem("access"));
 
   await axios
     .get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/users/me/`, {
@@ -45,7 +43,6 @@ export const load_user = () => async (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: USER_LOADED_FAIL,
       });
@@ -108,8 +105,6 @@ export const login = (email, password) => async (dispatch) => {
     type: SET_AUTH_LOADING,
   });
 
-  // withCredentialsをtrueにすることで通信時にCookieを送信できるようになります。
-  //   axios.defaults.withCredentials = true;
   await axios
     .post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/jwt/create/`,
@@ -124,11 +119,8 @@ export const login = (email, password) => async (dispatch) => {
       }
     )
     .then((res) => {
-      //   console.log(res.data.access);
-      // {refresh: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90e…oxMH0.WVI8h0izMORqT-Cgy72_QjJXkKwKojEvdi3ScQiNTFw', access: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90e…jEwfQ.a5emR25ac-foKevRYBh-ooogqnHJNEbqK8sA1CKPzvg'}access: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQyNTAxNjI4LCJqdGkiOiI4MmM1MWQ5OGFmMjQ0YTk3OTZjNjMzZTcxMGViNDJhNiIsInVzZXJfaWQiOjEwfQ.a5emR25ac-foKevRYBh-ooogqnHJNEbqK8sA1CKPzvg"refresh: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY0Mjc1NzIyOCwianRpIjoiOWI1MDI3ZmViMThkNGY4ZGFmNTljY2FjNGUwYmEwNWMiLCJ1c2VyX2lkIjoxMH0.WVI8h0izMORqT-Cgy72_QjJXkKwKojEvdi3ScQiNTFw"[[Prototype]]: Object
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
-      //   res.cookie("access", res.data.access, { httpOnly: true });
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -136,9 +128,9 @@ export const login = (email, password) => async (dispatch) => {
       dispatch(load_user());
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: LOGIN_FAIL,
+        payload: err.response.data,
       });
     });
 
@@ -147,45 +139,7 @@ export const login = (email, password) => async (dispatch) => {
   });
 };
 
-export const login_not_set_accesstoken =
-  (email, password) => async (dispatch) => {
-    dispatch({
-      type: SET_AUTH_LOADING,
-    });
-
-    await axios
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/jwt/create/`,
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: res.data,
-        });
-        // dispatch(load_user());
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({
-          type: LOGIN_FAIL,
-        });
-      });
-
-    dispatch({
-      type: REMOVE_AUTH_LOADING,
-    });
-  };
-
-export const register =
+export const user_register =
   (name, email, password, re_password) => async (dispatch) => {
     dispatch({
       type: SET_AUTH_LOADING,
@@ -207,16 +161,15 @@ export const register =
         }
       )
       .then((res) => {
-        console.log(res);
         dispatch({
           type: SIGNUP_SUCCESS,
-          payload: res.data,
+          payload: res.status,
         });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({
           type: SIGNUP_FAIL,
+          payload: err.response.data,
         });
       });
 
@@ -283,8 +236,10 @@ export const reset_password = (email) => async (dispatch) => {
       type: PASSWORD_RESET_SUCCESS,
     });
   } catch (err) {
+    console.log(err.response.data);
     dispatch({
       type: PASSWORD_RESET_FAIL,
+      payload: err.response.data,
     });
   }
 
@@ -335,22 +290,27 @@ export const logout = () => (dispatch) => {
 };
 
 // プロフィール編集
-export const edit_profile = (id, name, image) => async (dispatch) => {
+export const edit_profile = (name, image, introduction) => async (dispatch) => {
   dispatch({
     type: SET_AUTH_LOADING,
   });
 
   const formData = new FormData();
-  formData.append("name", name);
+  if (name) {
+    formData.append("name", name);
+  }
   if (image) {
     formData.append("image", image);
   }
+  if (introduction) {
+    formData.append("introduction", introduction);
+  }
 
-  token = localStorage.getItem("access");
+  const token = localStorage.getItem("access");
   if (token) {
     axios
       .patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/users/${id}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/users/me/`,
         formData,
         {
           headers: {
@@ -360,10 +320,14 @@ export const edit_profile = (id, name, image) => async (dispatch) => {
         }
       )
       .then((res) => {
-        console.log(res);
+        dispatch({
+          type: EDIT_PROFILE_SUCCESS,
+        });
       })
       .catch((err) => {
-        console.log(err);
+        dispatch({
+          type: EDIT_PROFILE_FAIL,
+        });
       });
   }
 
