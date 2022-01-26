@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 
+from templated_mail.mail import BaseEmailMessage
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -134,18 +136,23 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ローカル確認用
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # 本番環境用
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # 詳しくは→[https://docs.djangoproject.com/en/4.0/ref/settings/]に記載されている
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_POST = 587
-EMAIL_HOST_USER = 'xxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxx'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kamotoshi.workingo@gmail.com'
+EMAIL_HOST_PASSWORD = 'Syun!0514'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'xxx@gmail.com'
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+DOMAIN = ('localhost:3000')
+# SITE_NAME = ('YOUR_SITE_NAME')
 
 REST_FRAMEWORK = {
     # 認証が必要

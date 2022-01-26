@@ -14,28 +14,27 @@ const chat = () => {
   const [receivedData, setRecivedData] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const [fetchData, setFetchData] = useState("");
-  const [isLoading, setLoading] = useState(false);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const scrollBottomRef = useRef(null);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(load_user());
+    if (!user) {
+      dispatch(load_user());
+    }
   }, []);
   useEffect(() => {
     // urlにqueryが入ったときにメッセージ履歴をフェッチ
-    setLoading(true);
     fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/app/chatmessage/?room_name=${room_name}`
     )
       .then((res) => res.json())
       .then((data) => {
         setFetchData(data);
-        setLoading(false);
       });
   }, [router.query]);
   useEffect(() => {
     if (scrollBottomRef && scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      //   scrollBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      scrollBottomRef.current.scrollIntoView({});
     }
   }, [fetchData, receivedData]);
   const ws = useRef(null);
@@ -46,17 +45,18 @@ const chat = () => {
     const path = `ws://127.0.0.1:8000/ws/chat/${room_name}/`;
     ws.current = new WebSocket(path);
     const wsCurrent = ws.current;
-    ws.current.onclose = function (event) {
-      console.log(event);
-    };
+    // ws.current.onclose = function (event) {
+    //   console.log(event);
+    // };
     // ws.current.onopen = () => console.log("ws opened");
     // ws.current.onclose = () => console.log("ws closed");
     ws.current.onmessage = (event) => {
       let jsonObject = JSON.parse(event.data);
+      console.log(jsonObject);
       setRecivedData((receivedData) => [...receivedData, jsonObject]);
     };
-    ws.current.onerror = (event) =>
-      console.log("WebSocket error observed:", event);
+    // ws.current.onerror = (event) =>
+    //   console.log("WebSocket error observed:", event);
 
     // コンポーネントがアンマウントされたときに発生するもの
     return () => {

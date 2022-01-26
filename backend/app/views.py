@@ -31,7 +31,10 @@ class ChatMessageView(ModelViewSet):
         room_name = self.request.query_params.get('room_name', None)
         if room_name is not None:
             # 完全一致
-            queryset = queryset.filter(room_name__name=room_name)[:100]
+            # queryset = queryset.filter(
+            #     room_name__name=room_name).order_by('-posted_at')[:10]
+            queryset = queryset.filter(
+                room_name__name=room_name).all()
         return queryset
 
 
@@ -116,17 +119,24 @@ class CoinMarketView(ModelViewSet):
 #     return room
 
 
-class ChatMessageListView(ListAPIView):
-    serializer_class = ChatMessageSerializer
-    permission_classes = (permissions.AllowAny,)
+# class ChatMessageListView(ListAPIView):
+#     serializer_class = ChatMessageSerializer
+#     permission_classes = (permissions.AllowAny,)
 
-    def get_queryset(self):
-        queryset = ChatMessage.objects.all()
-        username = self.request.query_params.get('room_name', None)
-        if username is not None:
-            contact = get_user_contact(username)
-            queryset = contact.chats.all()
-        return queryset
+#     # def get_queryset(self):
+#     #     queryset = ChatMessage.objects.all()
+#     #     username = self.request.query_params.get('room_name', None)
+#     #     if username is not None:
+#     #         contact = get_user_contact(username)
+#     #         queryset = contact.chats.all()
+#     #     return queryset
+#     def get_queryset(self):
+#         queryset = ChatMessage.objects.all()
+#         room_name = self.request.query_params.get('room_name', None)
+#         if room_name is not None:
+#             contact = get_user_contact(room_name)
+#             queryset = contact.chats.all()
+#         return queryset
 
 
 class ChatCreateView(CreateAPIView):

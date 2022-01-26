@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Container from "@mui/material/Container";
 import AvatarSlider from "../components/AvatorSlider/AvatarSlider";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { load_user } from "../reduxs/actions/auth";
 
@@ -12,8 +12,11 @@ import Footer from "../components/Footer/Footer";
 const Home = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
-    dispatch(load_user());
+    if (!user) {
+      dispatch(load_user());
+    }
   }, []);
 
   if (router.isFallback) {

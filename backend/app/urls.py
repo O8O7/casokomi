@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import ChatMessageView, CoinMarketView, ChatMessageListView, ChatCreateView, ChatDeleteView
+from .views import ChatMessageView, CoinMarketView
 
 from rest_framework.routers import DefaultRouter
 from rest_framework import routers

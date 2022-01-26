@@ -10,14 +10,11 @@ import { CookiesProvider } from "react-cookie";
 
 import "/styles/globals.css";
 import theme from "../styles/theme";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
-  //   const router = useRouter();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const store = useStore(pageProps.initialReduxState);
 

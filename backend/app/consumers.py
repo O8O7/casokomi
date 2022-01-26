@@ -58,6 +58,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     def createMessage(self, data):
         room_name = data['room_name']
         chatroom = ChatRoom.objects.get(name=room_name)
+        # print('username_id: {}, room_name: {}, message: {}'.format(
+        # data['user_id'], chatroom, data['message']))
         ChatMessage.objects.create(
             username_id=data['user_id'],
             room_name=chatroom,
