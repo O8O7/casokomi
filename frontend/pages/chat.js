@@ -42,13 +42,13 @@ const chat = () => {
   useEffect(() => {
     //  最初のレンダリングで発生するもの
     //  およびその後の再レンダリング
-    const path = `ws://127.0.0.1:8000/ws/chat/${room_name}/`;
+    const path = `wss://kasokomi.herokuapp.com/ws/chat/${room_name}/`;
     ws.current = new WebSocket(path);
     const wsCurrent = ws.current;
     // ws.current.onclose = function (event) {
     //   console.log(event);
     // };
-    // ws.current.onopen = () => console.log("ws opened");
+    ws.current.onopen = () => console.log("ws opened");
     // ws.current.onclose = () => console.log("ws closed");
     ws.current.onmessage = (event) => {
       let jsonObject = JSON.parse(event.data);

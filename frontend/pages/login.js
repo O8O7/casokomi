@@ -126,7 +126,7 @@ export default function Login() {
               <span style={{ color: "red" }}>{errors.email?.message}</span>
               <TextField
                 {...register("password", {
-                  required: "*入力してください",
+                    required: true,
                   minLength: {
                     value: 8,
                     message: "8文字以上入力してください",

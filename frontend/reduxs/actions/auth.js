@@ -167,6 +167,7 @@ export const user_register =
         });
       })
       .catch((err) => {
+          console.log(err.response)
         dispatch({
           type: SIGNUP_FAIL,
           payload: err.response.data,
